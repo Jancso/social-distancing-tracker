@@ -1,0 +1,19 @@
+
+Ideas:
+- Detection of disruptive and violent behavior in classes, on campus or in public transportation
+- Detection of ill people (e.g. when they cough, sneeze or blow their noses) to stop the spread of a virus
+- Supervision during online exams (might be a hot topic at the end of the semester!), for example eye/head tracking to see if an examinee is cheating by looking at anything besides the screen.
+
+Technical aspects: 
+Eye tracking, facial recognition, head tracking, false negatives (actual cheating going undetected), false positives (people staring away while thinking aren't necessarily cheaters), etc.
+
+Possible approach:
+Setting up surveillance tool: https://github.com/IBM/dnn-object-detection
+Create some video material (with people disrupting, cheating, sneezing, etc.)
+Run video material through tool
+Evaluate detection accuracy
+
+
+Legal aspects:
+Training data (before and during system usage), invasive software (usually requires admin privileges and other deep access, who's responsible for any damage, what if somebody declines these permissions), validity of false positives/negatives.
+
