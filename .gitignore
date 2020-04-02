@@ -1,2 +1,5 @@
-
+motion_images/
+venv/
+.env
+.idea
 yolo object detection/yolov3.weights
