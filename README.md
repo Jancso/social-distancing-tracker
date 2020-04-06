@@ -59,7 +59,17 @@ Now using node v8.9.0 (npm v5.5.1)
 Initializing Cloudant DB
 ```
 
-### Set up local environment
+### Set up opencv
+* Install opencv according to the instructions [here](https://docs.opencv.org/master/df/d65/tutorial_table_of_content_introduction.html)
+* Create executable
+```shell script
+cd nodejsAction/cv/
+cmake
+make
+```
+* Download `yolov3.weights` [here](https://pjreddie.com/media/files/yolov3.weights)
+
+### Set up Python environment
 * Install python >=3.7
 ```shell script
 # Mac OS
