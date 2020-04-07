@@ -73,13 +73,19 @@
 
 <script>
 
-    $("#refresh-button").click(function () {
+    function extract_images() {
+        $(".extracted-images-td").remove();
         $.getJSON("/query/all", function (result) {
 
             $.each(result.rows, function (i, field) {
-                $("#tbody-extracted").append(`<tr><td>${field.doc.filename}</td><td>${field.doc.time}</td></tr>`);
+                $("#tbody-extracted").append(
+                    `<tr class="extracted-images-td"><td>${field.doc.filename}</td><td>${field.doc.time}</td></tr>`);
             });
         });
+    }
+
+    $("#refresh-button").click(function () {
+        extract_images();
     });
 
 </script>
