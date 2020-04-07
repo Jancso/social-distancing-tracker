@@ -22,7 +22,12 @@ somewhere on your computer.
 git clone https://github.com/Jancso/ai-surveillance.git
 ```
 
-### Create .env file
+### Set up Node.js environment
+Set up Node.js
+* Install Node.js, version 13 (tested on v13.12.0)
+* Install npm, version 6 (tested on v6.14.4)
+
+Create .env file:
 * Create a file named '.env' in the root directory of the repository.
 * Set the corresponding environment variables in the file with the 
 saved password and username plus the database name.
@@ -32,36 +37,9 @@ CLOUDANT_PASSWORD=your_saved_password
 CLOUDANT_DB=imagedb
 ```
 
-### Set up node.js server
-* Install node.js
-```shell script
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-nvm install v8.9.0
-nvm use 8.9.0
-```
-* Install and start docker
-* Run node.js server in the root directory of the repository:
-```shell script
-docker run -d -p 3000:3000 --env-file .env --name opencv_yolo kkbankol/opencv_yolo_pod
-```
-This will pull the docker image with the given Dockerfile, 
-create a container from it and start it. In
-case, you already created the container, but it is not running (which you
-can check by executing '`docker container ls`'), you can start it by executing
-'`docker start -a opencv_yolo`'. In both cases, you should get the following
-output:
-```
-Now using node v8.9.0 (npm v5.5.1)
-
-> cameras-app@0.0.0 start /opt/cameras_app
-> node ./bin/www
-
-Initializing Cloudant DB
-```
-
-### Set up opencv
+Set up opencv:
 * Install opencv according to the instructions [here](https://docs.opencv.org/master/df/d65/tutorial_table_of_content_introduction.html)
-* Create executable
+* Create object detection executable
 ```shell script
 cd yolo_object_detection
 cmake .
@@ -98,9 +76,21 @@ source venv/bin/activate
 pip install requests numpy opencv-contrib-python
 ```
 
-### Run application
-Run application with a pre-recorded video
+### Run node.js server
+* Run server in the root directory of the repository:
+```shell script
+npm start
+```
+* Open browser and load web application with URL:
+```shell script
+localhost:3000
+```
+
+### Run python application
+* Run application with a pre-recorded video
  in the root directory of the repository:
 ```shell script
 python cv_object_detection.py sample_videos/vid10.mp4 127.0.0.1 3000
 ```
+* Click on `Refresh` in the web application and 
+a list of extracted image data should be shown.
