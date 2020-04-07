@@ -77,6 +77,7 @@ const createCloudantWithAttachments = function (docID, imagePath, eventProps) {
     const i = imagePath.split('/');
     const imageName = i[i.length - 1];
     console.log("loading: " + imagePath);
+    // TODO: try to understand why this is needed
     fs.readFile("detected_images/output.jpg", function (err, data) {
         if (!err) {
             console.log("inserting document");
