@@ -26,6 +26,10 @@ git clone https://github.com/Jancso/ai-surveillance.git
 Set up Node.js
 * Install Node.js, version 13 (tested on v13.12.0)
 * Install npm, version 6 (tested on v6.14.4)
+* Install dependencies:
+```shell script
+npm install
+```
 
 Create .env file:
 * Create a file named '.env' in the root directory of the repository.
