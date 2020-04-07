@@ -63,11 +63,12 @@ Initializing Cloudant DB
 * Install opencv according to the instructions [here](https://docs.opencv.org/master/df/d65/tutorial_table_of_content_introduction.html)
 * Create executable
 ```shell script
-cd nodejsAction/cv/
-cmake
+cd yolo_object_detection
+cmake .
 make
 ```
 * Download `yolov3.weights` [here](https://pjreddie.com/media/files/yolov3.weights)
+and put it in the `yolo_object_detection` directory
 
 ### Set up Python environment
 * Install python >=3.7

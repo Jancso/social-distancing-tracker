@@ -141,7 +141,7 @@ router.post('/image/upload',
     upload.single('file'), function (req, res, next) {
         if (req.file) {
             try {
-                const path = "nodejsAction/cv/";
+                const path = "yolo_object_detection/";
                 const objectDetectionBin = path + "ObjectDetection";
                 const modelConfigPath = path + "yolov3.cfg";
                 const modelWeightsPath = path + "yolov3.weights";
