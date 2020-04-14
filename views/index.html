@@ -54,18 +54,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="table-responsive">
-                <table class="table table-striped table-sm">
-                    <thead>
-                    <tr>
-                        <th>Filename</th>
-                        <th>Time</th>
-                    </tr>
-                    </thead>
-                    <tbody id="tbody-extracted">
-                </table>
-            </div>
         </main>
     </div>
 </div>
@@ -74,12 +62,36 @@
 <script>
 
     function extract_images() {
-        $(".extracted-images-td").remove();
+        $(".card").remove();
+
         $.getJSON("/query/all", function (result) {
 
             $.each(result.rows, function (i, field) {
-                $("#tbody-extracted").append(
-                    `<tr class="extracted-images-td"><td>${field.doc.filename}</td><td>${field.doc.time}</td></tr>`);
+                console.log(field);
+
+                let json_row = `json-row${i}`;
+
+                $("main").append(`
+                <div class="card w-50 mt-3">
+                    <div class="card-header">
+                        ${field.doc.filename}
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><b>Time</b>: ${field.doc.time}</li>
+                        <li id="${json_row}" class="list-group-item"><b>Detected Objects</b>:
+                        </li>
+                    </ul>
+                </div>
+                `);
+
+                $.each(field.doc.classes, function (index, value) {
+                    $(`#${json_row}`).append(`
+                    <div class="mt-1">
+                        ${index}: ${value.count} instances
+                    </div>
+                    `);
+                });
+
             });
         });
     }
