@@ -18,3 +18,7 @@ public
 detected_images
 
 uploads
+
+__pycache__
+
+*.avi
