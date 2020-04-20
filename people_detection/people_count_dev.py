@@ -36,12 +36,13 @@ protext_path = "mobilenet_ssd/MobileNetSSD_deploy.prototxt"
 model_path = "mobilenet_ssd/MobileNetSSD_deploy.caffemodel"
 net = cv2.dnn.readNetFromCaffe(protext_path, model_path)
 
-video_path = "videos/example_02.mp4"
+video_path = "videos/example_01.mp4"
 vs = cv2.VideoCapture(video_path)
 
 output = "output/output_test.avi" 
 skip_frame = 30
 confidence_level = 0.4
+group_size = 3
 
 # initialize the video writer (we'll instantiate later if need be)
 writer = None
@@ -173,12 +174,52 @@ while True:
     # centroids with (2) the newly computed object centroids
     objects = ct.update(rects)
     
-    persons = [(centroid[0] ,centroid[1]) for (_, centroid) in objects.items()]
-    connections = combinations(persons,2)
-    for con in connections:
-        distance = (abs(con[0][0]-con[1][0])**2+abs(con[0][1]-con[1][1])**2)**0.5
-        if distance < 150:
-            cv2.line(frame,con[0],con[1],(0, 0, 255), 5)
+    #distance a person must have to another
+    radius = 150
+    #notes which person is connect with whome
+    dep_dict = {}
+    #persons = [(centroid[0] ,centroid[1]) for (ID, centroid) in objects.items()]
+    #connections = combinations(persons,2)
+    connections = combinations(objects.keys(),2)
+    #draw a line if 2 person are in each others radius
+    for obj_a, obj_b in connections:
+        node1 = (objects[obj_a][0],objects[obj_a][1])
+        node2 = (objects[obj_b][0],objects[obj_b][1])
+        
+        distance = (abs(node1[0]-node2[0])**2+abs(node1[1]-node2[1])**2)**0.5
+        
+        if distance < radius:
+            dep_dict[obj_a] = dep_dict[obj_a]+[obj_b] if obj_a in dep_dict.keys() else [obj_b]
+            dep_dict[obj_b] = dep_dict[obj_b]+[obj_a] if obj_b in dep_dict.keys() else [obj_a] 
+            cv2.line(frame,node1,node2,(0, 0, 255), 2)
+         
+    #check dependancies to create groups
+    group_nr = 0
+    group_dict = {}
+    dep_keys = list(dep_dict.keys())
+    while dep_keys != []:
+        a = dep_keys.pop()
+        group_nr +=1
+        group = [a]
+        stack = dep_dict[a]
+        while stack != []:
+            b = stack.pop()
+            if b in dep_keys:
+                stack = stack + dep_dict[b]
+                group.append(b)
+                dep_keys.remove(b)
+                
+        group_dict['group_' + str(group_nr)] = group
+    for g, nodes in group_dict.items():
+        if len(nodes) >= group_size:
+            print(g+str(nodes))
+            points = np.array([[objects[x][0],objects[x][1]] for x in nodes])
+            alpha=0.8
+            overlay = frame.copy()
+            cv2.fillPoly(overlay, np.int32([points]), (0,0,255))
+            cv2.addWeighted(overlay, alpha, frame, 1 - alpha,0,frame)
+            #cv2.putText(frame, text, (centroid[0] - 10, centroid[1] - 10),
+             #   cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
     
     # loop over the tracked objects
     for (objectID, centroid) in objects.items():
@@ -225,7 +266,7 @@ while True:
         text = "ID {}".format(objectID)
         cv2.putText(frame, text, (centroid[0] - 10, centroid[1] - 10),
             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-        cv2.circle(frame, (centroid[0], centroid[1]), 150, (0, 255, 0), 2)
+        cv2.circle(frame, (centroid[0], centroid[1]), radius, (0, 255, 0), 2)
 
     # construct a tuple of information we will be displaying on the
     # frame
