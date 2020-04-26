@@ -4,4 +4,8 @@
 
 {{ video.name }}
 
+<video id="videoPlayer" controls muted="muted" autoplay>
+    <source src="http://localhost:3000/videos/{{ video.name }}/download/" type="video/mp4">
+</video>
+
 {% endblock %}
