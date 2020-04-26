@@ -42,13 +42,17 @@ model_path = str(script_dir_path / "mobilenet_ssd/MobileNetSSD_deploy.caffemodel
 net = cv2.dnn.readNetFromCaffe(protext_path, model_path)
 
 if len(sys.argv) > 1:
-    video_path = str(script_dir_path / "videos/example_01.mp4")
-else:
     video_path = sys.argv[1]
+else:
+    video_path = str(script_dir_path / "videos/example_01.mp4")
+
+if len(sys.argv) > 2:
+    output = sys.argv[2]
+else:
+    output = str(script_dir_path / "output/output_test.avi")
 
 vs = cv2.VideoCapture(video_path)
 
-output = "output/output_test.avi" 
 skip_frame = 30
 confidence_level = 0.4
 group_size = 3

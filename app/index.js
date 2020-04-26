@@ -143,8 +143,9 @@ io.sockets.on('connection', function (socket) {
                     socket.emit('uploadFinished');
 
                     // run people detection script
-                    const abs_file_path = path.resolve(videos_dir + fileName);
-                    let cmd = `../venv/bin/python ../people_detection/people_count_dev.py ${abs_file_path}`;
+                    const video_path = path.resolve(path.join(videos_dir, fileName));
+                    const tracked_video_path = path.resolve(path.join(videos_dir, "tracked-"+fileName));
+                    let cmd = `../venv/bin/python ../people_detection/people_count_dev.py ${video_path} ${tracked_video_path}`;
 
                     child_process.exec(cmd, (err, stdout) => {
                         if (err) {
