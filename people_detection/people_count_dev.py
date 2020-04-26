@@ -20,6 +20,7 @@ import imutils
 import time
 import dlib
 import cv2
+import sys
 from pathlib import Path
 
 
@@ -40,7 +41,11 @@ protext_path = str(script_dir_path / "mobilenet_ssd/MobileNetSSD_deploy.prototxt
 model_path = str(script_dir_path / "mobilenet_ssd/MobileNetSSD_deploy.caffemodel")
 net = cv2.dnn.readNetFromCaffe(protext_path, model_path)
 
-video_path = str(script_dir_path / "videos/example_01.mp4")
+if len(sys.argv) > 1:
+    video_path = str(script_dir_path / "videos/example_01.mp4")
+else:
+    video_path = sys.argv[1]
+
 vs = cv2.VideoCapture(video_path)
 
 output = "output/output_test.avi" 
