@@ -20,6 +20,7 @@ import imutils
 import time
 import dlib
 import cv2
+from pathlib import Path
 
 
 
@@ -32,11 +33,14 @@ CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
 
 # load our serialized model from disk
 
-protext_path = "mobilenet_ssd/MobileNetSSD_deploy.prototxt"
-model_path = "mobilenet_ssd/MobileNetSSD_deploy.caffemodel"
+script_path = Path(__file__).resolve()
+script_dir_path = script_path.parent
+
+protext_path = str(script_dir_path / "mobilenet_ssd/MobileNetSSD_deploy.prototxt")
+model_path = str(script_dir_path / "mobilenet_ssd/MobileNetSSD_deploy.caffemodel")
 net = cv2.dnn.readNetFromCaffe(protext_path, model_path)
 
-video_path = "videos/example_01.mp4"
+video_path = str(script_dir_path / "videos/example_01.mp4")
 vs = cv2.VideoCapture(video_path)
 
 output = "output/output_test.avi" 
