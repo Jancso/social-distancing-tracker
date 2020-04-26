@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="row">
+
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Upload new video</h5>
+            </div>
+            <div class="card-body">
+                <div id="uploadArea" class="mt-3">
+                    <label for="fileBox">Choose a file: </label>
+                    <input type="file" id="fileBox" class="form-control-file">
+                    <br>
+                    <label for="nameBox">Name of the file: </label>
+                    <input type="text" id="nameBox" class="form-control"><br>
+                    <button type="button" id="uploadButton" class="btn btn-primary">Upload</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-1"></div>
+
+    <div class="col-6">
+
+        <div class="card">
+            <div class="card-header">
+                <h5>Analyzed videos</h5>
+            </div>
+            <div class="card-body">
+                <ul>
+                    {% for video in videos %}
+                    <li>{{ video.name }}</li>
+                    {% else %}
+                    <li>No Videos uploaded yet</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
+        integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
+
+<script>
+
+    let selectedFile;
+    const bytesPerMB = 1048576;
+    const blockSize = 524288;
+
+
+    function setSelectedFile(evnt) {
+        selectedFile = evnt.target.files[0];
+        document.getElementById('nameBox').value = selectedFile.name;
+    }
+
+
+    document.getElementById('uploadButton').addEventListener('click', StartUpload);
+    document.getElementById('fileBox').addEventListener('change', setSelectedFile);
+
+
+    const socket = io.connect('http://localhost:3000');
+    let fileReader;
+    let fileName;
+
+    function StartUpload(){
+        if(document.getElementById('fileBox').value !== "")
+        {
+            fileReader = new FileReader();
+            fileName = document.getElementById('nameBox').value;
+
+            document.getElementById('uploadArea').innerHTML = `
+                <div class="mb-3">Uploading ${selectedFile.name} as ${fileName}</div>
+                <div class="progress">
+                    <div id="progressBar" class="progress-bar" role="progressbar"></div>
+                </div>
+                <div class="mt-3">
+                    <span id="megabytesUploaded">0</span> / ${Math.round(selectedFile.size / bytesPerMB)} MB
+                </div>
+            `;
+
+            fileReader.onload = function(event){
+                socket.emit('continueUpload', { fileName : fileName, fileData : event.target.result });
+            };
+
+            socket.emit('startUpload', { fileName : fileName, fileSize : selectedFile.size });
+        }
+        else
+        {
+            alert('No file selected!');
+        }
+    }
+
+    // server requesting more data
+    socket.on('uploadMore', function (data){
+        // update progress bar
+        updateProgressBar(data.percentUploaded);
+
+        // start and end position of next video block
+        const blockStart = data.blockPosition * blockSize;
+        const blockEnd = blockStart + Math.min(blockSize, (selectedFile.size-blockStart));
+
+        // create block
+        let block;
+        if(selectedFile.slice)
+            block = selectedFile.slice(blockStart, blockEnd);
+            fileReader.readAsBinaryString(block);
+    });
+
+    // Update progress bar
+    function updateProgressBar(percentUploaded){
+        document.getElementById('progressBar').style.width = percentUploaded + '%';
+        document.getElementById('progressBar').innerHTML = (Math.round(percentUploaded*100)/100) + '%';
+        const megabytesUploaded = Math.round(((percentUploaded/100.0) * selectedFile.size) / bytesPerMB);
+        document.getElementById('megabytesUploaded').innerHTML = megabytesUploaded;
+    }
+
+    socket.on('uploadFinished', function (){
+        location.reload();
+    });
+
+</script>
+
+{% endblock %}

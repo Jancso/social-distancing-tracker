@@ -13,8 +13,6 @@ Makefile
 
 ObjectDetection
 
-public
-
 detected_images
 
 uploads
@@ -22,3 +20,5 @@ uploads
 __pycache__
 
 *.avi
+
+videos/

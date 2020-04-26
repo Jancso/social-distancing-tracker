@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+    <h1 class="h2">Webcam</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button id="refresh-button" type="button" class="btn btn-sm btn-outline-secondary">Track Webcam
+            </button>
+        </div>
+        <div class="btn-group mr-2">
+            <button id="start-webcam" type="button" class="btn btn-sm btn-outline-secondary">Start Webcam</button>
+        </div>
+        <div id="stop-webcam" class="btn-group mr-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Stop Webcam</button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <img id="image">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
+                integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
+
+
+        <script>
+            const socket = io.connect('http://localhost:3000');
+            socket.on('image', (image) => {
+                const imageElm = document.getElementById('image');
+                imageElm.src = `data:image/jpeg;base64,${image}`;
+            });
+
+
+            const start_webcam_button = document.getElementById('start-webcam');
+
+            start_webcam_button.addEventListener('click', function (e) {
+                const Http = new XMLHttpRequest();
+                const url = 'http://localhost:3000/webcam/start/';
+                Http.open("GET", url);
+                Http.send();
+            });
+
+            const stop_webcam_button = document.getElementById('stop-webcam');
+
+            stop_webcam_button.addEventListener('click', function (e) {
+                const Http = new XMLHttpRequest();
+                const url = 'http://localhost:3000/webcam/stop/';
+                Http.open("GET", url);
+                Http.send();
+                console.log('Webcam stopped!');
+            });
+
+        </script>
+    </div>
+</div>
+
+
+{% endblock %}
