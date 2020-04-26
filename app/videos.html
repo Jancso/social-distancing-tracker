@@ -126,7 +126,16 @@
     }
 
     socket.on('uploadFinished', function (){
-        location.reload();
+        document.getElementById('uploadArea').innerHTML = `
+            <div class="d-flex align-items-center">
+              <strong>Analyzing video...</strong>
+              <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+            </div>
+        `;
+    });
+
+    socket.on('videoAnalyzed', function (){
+        window.location.href = "http://localhost:3000/videos/"+fileName;
     });
 
 </script>

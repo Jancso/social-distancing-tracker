@@ -153,9 +153,9 @@ io.sockets.on('connection', function (socket) {
                         } else {
                             console.log(stdout);
                             console.log(`file ${fileName} analyzed!`);
+                            socket.emit('videoAnalyzed');
                         }
                     });
-
                 });
             });
         }
