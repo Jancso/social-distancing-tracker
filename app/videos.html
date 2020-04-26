@@ -34,7 +34,11 @@
             <div class="card-body">
                 <ul>
                     {% for video in videos %}
-                    <li>{{ video.name }}</li>
+                    <li>
+                        <a href="http://localhost:3000/videos/{{ video.name }}">
+                            {{ video.name }}
+                        </a>
+                    </li>
                     {% else %}
                     <li>No Videos uploaded yet</li>
                     {% endfor %}
