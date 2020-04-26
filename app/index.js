@@ -1,5 +1,6 @@
 const cv = require('opencv4nodejs');
 const path = require('path');
+const child_process = require("child_process");
 const express = require('express');
 const app = express();
 const server = require('http').Server(app);
@@ -140,6 +141,18 @@ io.sockets.on('connection', function (socket) {
                 fs.rename(temp_dir + fileName, videos_dir + fileName, (err) => {
                     if (err) throw err;
                     socket.emit('uploadFinished');
+
+                    // run people detection script
+                    let cmd = '../venv/bin/python ../people_detection/people_count_dev.py';
+                    child_process.exec(cmd, (err, stdout) => {
+                        if (err) {
+                            console.error(err);
+                        } else {
+                            console.log(stdout);
+                            console.log(`file ${fileName} analyzed!`);
+                        }
+                    });
+
                 });
             });
         }
