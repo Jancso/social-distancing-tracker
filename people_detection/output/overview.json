@@ -1,0 +1,54 @@
+{
+    "-1074998477809921451": {
+        "group_nr": 1,
+        "frame": 391,
+        "duration": 103,
+        "persons": [
+            3,
+            2
+        ],
+        "detected": true
+    },
+    "2342528563370594732": {
+        "group_nr": 2,
+        "frame": 405,
+        "duration": 26,
+        "persons": [
+            3,
+            2,
+            1
+        ],
+        "detected": false
+    },
+    "-9062964862794310877": {
+        "group_nr": 3,
+        "frame": 661,
+        "duration": 69,
+        "persons": [
+            5,
+            4
+        ],
+        "detected": true
+    },
+    "-681987504012143818": {
+        "group_nr": 4,
+        "frame": 1051,
+        "duration": 71,
+        "persons": [
+            9,
+            8
+        ],
+        "detected": true
+    },
+    "4830346233281543575": {
+        "group_nr": 5,
+        "frame": 1060,
+        "duration": 28,
+        "persons": [
+            9,
+            8,
+            7
+        ],
+        "detected": false
+    }
+}

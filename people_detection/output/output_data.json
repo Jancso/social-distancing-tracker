@@ -1,0 +1,28 @@
+{
+    "detectedd groups": [
+        {
+            "group_nr": 1,
+            "frame": 391,
+            "people_id": [
+                3,
+                2
+            ]
+        },
+        {
+            "group_nr": 3,
+            "frame": 661,
+            "people_id": [
+                5,
+                4
+            ]
+        },
+        {
+            "group_nr": 4,
+            "frame": 1051,
+            "people_id": [
+                9,
+                8
+            ]
+        }
+    ]
+}
