@@ -53,7 +53,7 @@ app.get('/videos/:videoId/', function (req, res) {
 
 // https://github.com/daspinola/video-stream-sample
 app.get('/videos/:videoId/download/', function(req, res) {
-    const videoPath = path.join(videos_dir, req.params['videoId']);
+    const videoPath = path.join(videos_dir, path.parse(req.params['videoId']).name, 'video.mp4');
     console.log(videoPath);
     const stat = fs.statSync(videoPath);
     const fileSize = stat.size;
@@ -184,9 +184,9 @@ io.sockets.on('connection', function (socket) {
                     socket.emit('uploadFinished');
 
                     // run people detection script
-                    const video_path = path.resolve(path.join(videos_dir, fileName));
-                    const tracked_video_path = path.resolve(path.join(videos_dir, "tracked-"+fileName));
-                    let cmd = `../venv/bin/python ../people_detection/people_count_dev.py ${video_path} ${tracked_video_path}`;
+                    const abs_videos_dir = path.resolve(videos_dir);
+                    const video_path = path.join(abs_videos_dir, fileName);
+                    let cmd = `../venv/bin/python ../people_detection/group_detection.py ${video_path} -o ${abs_videos_dir}`;
 
                     child_process.exec(cmd, (err, stdout) => {
                         if (err) {
@@ -194,7 +194,21 @@ io.sockets.on('connection', function (socket) {
                         } else {
                             console.log(stdout);
                             console.log(`file ${fileName} analyzed!`);
-                            socket.emit('videoAnalyzed');
+
+                            const output_video_dirname = path.parse(fileName).name
+                            const output_video_path = path.join(abs_videos_dir, output_video_dirname ,'output_video.mp4');
+                            const converted_video_path = path.join(abs_videos_dir, output_video_dirname, 'video.mp4');
+                            const convert_cmd = `ffmpeg -y -i ${output_video_path} -c:v libx264 -pix_fmt yuv420p ${converted_video_path}`;
+
+                            child_process.exec(convert_cmd, () => {
+                                if (err) {
+                                    console.error(err);
+                                } else {
+                                    console.log(stdout);
+                                    console.log(`file ${output_video_path} converted!`);
+                                    socket.emit('videoAnalyzed');
+                                }
+                            });
                         }
                     });
                 });

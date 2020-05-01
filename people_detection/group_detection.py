@@ -12,6 +12,7 @@ from imutils.video import VideoStream
 from imutils.video import FPS
 from itertools import combinations 
 from itertools import permutations
+from pathlib import Path
 import numpy as np
 import argparse
 import imutils
@@ -119,8 +120,10 @@ def main(video=None, output=None, confidence=None, distance=None, resize=None, s
         "sofa", "train", "tvmonitor"]
     
     # load our serialized model from disk
-    protext_path = "mobilenet_ssd/MobileNetSSD_deploy.prototxt"
-    model_path = "mobilenet_ssd/MobileNetSSD_deploy.caffemodel"
+    script_path = Path(__file__).resolve()
+    script_dir_path = script_path.parent
+    protext_path = str(script_dir_path / "mobilenet_ssd/MobileNetSSD_deploy.prototxt")
+    model_path = str(script_dir_path / "mobilenet_ssd/MobileNetSSD_deploy.caffemodel")
     net = cv2.dnn.readNetFromCaffe(protext_path, model_path)
     
     #load video
