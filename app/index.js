@@ -35,9 +35,11 @@ app.get('/videos/', (req, res) => {
 
     fs.readdir(videos_dir, (err, files) => {
         files.forEach(file => {
-            const video = {};
-            video.name = file;
-            videos.push(video);
+            if (fs.lstatSync(path.join(videos_dir, file)).isFile()){
+                const video = {};
+                video.name = file;
+                videos.push(video);
+            }
         });
 
         res.render('videos.html', {'videos': videos});
