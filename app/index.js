@@ -49,8 +49,17 @@ app.get('/videos/', (req, res) => {
 
 app.get('/videos/:videoId/', function (req, res) {
     const videoName = req.params['videoId'];
-    const video = {'name': videoName};
-    res.render('video.html', {'video': video});
+    const overview_json = path.join(videos_dir, path.parse(req.params['videoId']).name, 'overview.json');
+    //console.log(overview_json);
+    try {
+        const rawData = fs.readFileSync(overview_json);
+        const groups = JSON.parse(rawData);
+        //console.log('Groups:', groups);
+        const video = {'name': videoName, 'groups': groups};
+        res.render('video.html', {'video': video});
+    } catch(err) {
+        console.error(err)
+    }
 });
 
 // https://github.com/daspinola/video-stream-sample

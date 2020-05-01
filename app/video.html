@@ -8,4 +8,45 @@
     <source src="http://localhost:3000/videos/{{ video.name }}/download/" type="video/mp4">
 </video>
 
+<ul class="list-unstyled">
+    {% for hash, group in video.groups %}
+    <li class="media">
+        <img src="..." class="mr-3" alt="...">
+        <div class="media-body">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th scope="row">Group number</th>
+                    <td>{{ group.group_nr }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Frame</th>
+                    <td>{{ group.frame }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Time Stamp</th>
+                    <td>{{ group.timestamp }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Duration</th>
+                    <td>{{ group.duration }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">People</th>
+                    <td>
+                        {% for num in group.persons %}
+                            {{ num }},
+                        {% endfor %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </li>
+    {% else %}
+    No groups detected!
+    {% endfor %}
+</ul>
+
+
 {% endblock %}
