@@ -4,9 +4,17 @@
 
 {{ video.name }}
 
-<video id="videoPlayer" controls muted="muted" autoplay>
-    <source src="http://localhost:3000/videos/{{ video.name }}/download/" type="video/mp4">
+<video id="videoPlayer" controls muted="muted">
+    <source id="videoSource" src="http://localhost:3000/videos/{{ video.name }}/download/" type="video/mp4">
 </video>
+
+<script>
+    function setVideoToTimestamp(timestamp) {
+        const date = new Date(parseInt(timestamp));
+        var vid = document.getElementById("videoPlayer");
+        vid.currentTime = date.getSeconds();
+    }
+</script>
 
 <ul class="list-unstyled">
     {% for hash, group in video.groups %}
@@ -25,7 +33,12 @@
                 </tr>
                 <tr>
                     <th scope="row">Time Stamp</th>
-                    <td>{{ group.timestamp }}</td>
+                    <td>
+                        <button onclick="setVideoToTimestamp({{ group.timestamp }})">
+
+                        </button>
+                        {{ group.timestamp }}
+                    </td>
                 </tr>
                 <tr>
                     <th scope="row">Duration</th>
