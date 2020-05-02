@@ -107,7 +107,7 @@ def main(video=None, output=None, confidence=None, distance=None, resize=None, s
     shrink_factor = shrink
     
     #fixed or unused parameters for now
-    group_size = 3 # nr people to count it as a group 
+    group_size = 2 # nr people to count it as a group
     group_duration = 50
     video_stream = False
     show_window = False #show the frames in a window
