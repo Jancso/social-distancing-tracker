@@ -11,7 +11,7 @@
 <ul class="list-unstyled">
     {% for hash, group in video.groups %}
     <li class="media">
-        <img src="..." class="mr-3" alt="...">
+        <img src="http://localhost:3000/{{ video.image_dir + '/group_' + group.group_nr + '.jpg' }}" class="mr-3" alt="...">
         <div class="media-body">
             <table class="table">
                 <tbody>

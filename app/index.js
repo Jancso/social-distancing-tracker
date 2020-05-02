@@ -14,6 +14,7 @@ nunjucks.configure({
 });
 
 app.use(express.static('public'));
+app.use('/pvideos', express.static('videos'));
 
 app.get('/', (req, res) => {
     res.render('index.html');
@@ -49,13 +50,16 @@ app.get('/videos/', (req, res) => {
 
 app.get('/videos/:videoId/', function (req, res) {
     const videoName = req.params['videoId'];
-    const overview_json = path.join(videos_dir, path.parse(req.params['videoId']).name, 'overview.json');
+    const video_dir = path.join(videos_dir, path.parse(req.params['videoId']).name);
+    const overview_json = path.join(video_dir, 'overview.json');
+    const image_dir = path.join('pvideos', path.parse(req.params['videoId']).name, 'groups');
+    console.log(image_dir);
     //console.log(overview_json);
     try {
         const rawData = fs.readFileSync(overview_json);
         const groups = JSON.parse(rawData);
         //console.log('Groups:', groups);
-        const video = {'name': videoName, 'groups': groups};
+        const video = {'name': videoName, 'groups': groups, 'image_dir': image_dir};
         res.render('video.html', {'video': video});
     } catch(err) {
         console.error(err)
