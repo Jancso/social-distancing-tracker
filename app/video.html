@@ -39,7 +39,7 @@
 
                 <div class="row mb-3">
                     <div class="col-11">
-                        <label for="groupSize">Group Size
+                        <label for="groupSizeSlider">Group Size
                             <button class="btn btn-sm"
                                     data-container="body"
                                     data-toggle="popover"
@@ -51,10 +51,10 @@
                         <input type="range"
                                class="custom-range"
                                min="2"
-                               max="5"
-                               id="groupSize"
-                               value="2"
-                               oninput="groupSizeOutput.value = groupSize.value">
+                               max="10"
+                               id="groupSizeSlider"
+                               value="1"
+                               oninput="groupSizeOutput.value = groupSizeSlider.value">
                     </div>
                     <div class="col-1 align-self-center text-center">
                         <output class="h5" name="groupSizeName" id="groupSizeOutput">2</output>
@@ -87,9 +87,9 @@
                     </div>
                 </div>
 
-                <ul class="list-unstyled mt-5">
+                <ul id="groups" class="list-unstyled mt-5">
                     {% for hash, group in video.groups %}
-                    <li class="media mb-2">
+                    <li id="group{{ group.group_nr }}" class="media mb-2">
                         <img src="http://localhost:3000/{{ video.image_dir + '/group_' + group.group_nr + '.jpg' }}"
                              class="mr-3" alt="...">
                         <div class="media-body">
@@ -117,7 +117,11 @@
                                     <td>{{ group.duration }}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">People</th>
+                                    <th scope="row">Size</th>
+                                    <td id="groupSize-group{{ group.group_nr }}">{{ group.persons | length }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">People IDs</th>
                                     <td>
                                         {% for num in group.persons %}
                                         {{ num }},
@@ -138,6 +142,32 @@
 
     </div>
 </div>
+
+<script>
+
+    const groupSizeSlider = document.getElementById('groupSizeSlider');
+
+    groupSizeSlider.addEventListener('input', function (event) {
+        console.log('slider changed!');
+        updateGroupBySize();
+    });
+
+    function updateGroupBySize() {
+        const groupsElement = document.getElementById('groups');
+        for (let i = 1; i < groupsElement.children.length+1; i++) {
+            const groupElement = document.getElementById('group'+i);
+            const size = parseInt(document.getElementById('groupSize-group'+i).textContent);
+            const sliderSize = parseInt(groupSizeSlider.value);
+            console.log(`group size ${size} is smaller than slider size ${groupSizeSlider.value}?:`, size < sliderSize);
+            if (size < sliderSize){
+                groupElement.setAttribute('hidden', '');
+            }
+            else {
+                groupElement.removeAttribute('hidden');
+            }
+        }
+    }
+</script>
 
 
 {% endblock %}
