@@ -115,7 +115,7 @@ if (!fs.existsSync(temp_dir)) {
     fs.mkdirSync(temp_dir);
 }
 
-app.get('/videos/', (req, res) => {
+app.get('/videos/', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
     let videos = [];
 
     fs.readdir(videos_dir, (err, files) => {
@@ -132,7 +132,7 @@ app.get('/videos/', (req, res) => {
 });
 
 
-app.get('/videos/:videoId/', function (req, res) {
+app.get('/videos/:videoId/', connectEnsureLogin.ensureLoggedIn(), function (req, res) {
     const videoName = req.params['videoId'];
     const video_dir = path.join(videos_dir, path.parse(req.params['videoId']).name);
     const overview_json = path.join(video_dir, 'overview.json');
@@ -151,7 +151,7 @@ app.get('/videos/:videoId/', function (req, res) {
 });
 
 // https://github.com/daspinola/video-stream-sample
-app.get('/videos/:videoId/download/', function(req, res) {
+app.get('/videos/:videoId/download/', connectEnsureLogin.ensureLoggedIn(), function(req, res) {
     const videoPath = path.join(videos_dir, path.parse(req.params['videoId']).name, 'video.mp4');
     console.log(videoPath);
     const stat = fs.statSync(videoPath);
@@ -192,7 +192,7 @@ app.get('/videos/:videoId/download/', function(req, res) {
 });
 
 
-app.get('/webcam/', (req, res) => {
+app.get('/webcam/', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
     res.render('webcam.html');
 });
 
@@ -200,7 +200,7 @@ let runWebcam = null;
 let wCap = null;
 
 // start the webcam
-app.get('/webcam/start/', (req, res) => {
+app.get('/webcam/start/', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
     // frames per second
     const FPS = 10;
     wCap = new cv.VideoCapture(0);
@@ -217,7 +217,7 @@ app.get('/webcam/start/', (req, res) => {
 
 
 // stop the webcam
-app.get('/webcam/stop/', () => {
+app.get('/webcam/stop/', connectEnsureLogin.ensureLoggedIn(), () => {
     clearInterval(runWebcam);
     wCap.release();
     console.log('Webcam stopped!');
