@@ -35,7 +35,7 @@
                 <ul>
                     {% for video in videos %}
                     <li>
-                        <a href="http://localhost:3000/videos/{{ video.name }}">
+                        <a href="/videos/{{ video.name }}">
                             {{ video.name }}
                         </a>
                     </li>
@@ -135,7 +135,7 @@
     });
 
     socket.on('videoAnalyzed', function (){
-        window.location.href = "http://localhost:3000/videos/"+fileName;
+        window.location.href = "/videos/"+fileName;
     });
 
 </script>

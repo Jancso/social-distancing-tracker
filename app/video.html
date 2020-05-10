@@ -23,7 +23,7 @@
 
             <div>
                 <video id="videoPlayer" class="embed-responsive" controls muted="muted">
-                    <source id="videoSource" src="http://localhost:3000/videos/{{ video.name }}/download/"
+                    <source id="videoSource" src="/videos/{{ video.name }}/download/"
                             type="video/mp4">
                 </video>
             </div>
@@ -90,7 +90,7 @@
                 <ul id="groups" class="list-unstyled mt-5">
                     {% for hash, group in video.groups %}
                     <li id="group{{ group.group_nr }}" class="media mb-2">
-                        <img src="http://localhost:3000/{{ video.image_dir + '/group_' + group.group_nr + '.jpg' }}"
+                        <img src="/{{ video.image_dir + '/group_' + group.group_nr + '.jpg' }}"
                              class="mr-3" alt="...">
                         <div class="media-body">
                             <table class="table">

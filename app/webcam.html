@@ -38,7 +38,7 @@
 
             start_webcam_button.addEventListener('click', function (e) {
                 const Http = new XMLHttpRequest();
-                const url = 'http://localhost:3000/webcam/start/';
+                const url = '/webcam/start/';
                 Http.open("GET", url);
                 Http.send();
             });
@@ -47,7 +47,7 @@
 
             stop_webcam_button.addEventListener('click', function (e) {
                 const Http = new XMLHttpRequest();
-                const url = 'http://localhost:3000/webcam/stop/';
+                const url = '/webcam/stop/';
                 Http.open("GET", url);
                 Http.send();
                 console.log('Webcam stopped!');
