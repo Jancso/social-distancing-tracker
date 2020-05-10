@@ -96,7 +96,12 @@ app.get('/',
     (req, res) => res.render('index.html')
 );
 
-UserDetails.register({username:'anna', active: false}, 'anna');
+//UserDetails.register({username:'anna', active: false}, 'anna');
+
+app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+});
 
 
 const videos_dir = './videos/';
