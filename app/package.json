@@ -13,6 +13,12 @@
     "express": "^4.17.1",
     "opencv4nodejs": "5.5.0",
     "socket.io": "^2.3.0",
-    "nunjucks": "^3.2.1"
+    "nunjucks": "^3.2.1",
+    "body-parser": "^1.19.0",
+    "express-session": "^1.17.1",
+    "passport": "^0.4.1",
+    "mongoose": "^5.9.13",
+    "passport-local-mongoose": "^6.0.1",
+    "connect-ensure-login": "^0.1.1"
   }
 }

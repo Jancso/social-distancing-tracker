@@ -16,9 +16,88 @@ nunjucks.configure({
 app.use(express.static('public'));
 app.use('/pvideos', express.static('videos'));
 
-app.get('/', (req, res) => {
-    res.render('index.html');
+
+const bodyParser = require('body-parser');
+const expressSession = require('express-session')({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false
 });
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressSession);
+
+const port = process.env.PORT || 3000;
+
+const passport = require('passport');
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+server.listen(port, () => console.log('App listening on port ' + port));
+
+
+
+const mongoose = require('mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
+
+mongoose.connect('mongodb://localhost/MyDatabase',
+    { useNewUrlParser: true, useUnifiedTopology: true });
+
+const Schema = mongoose.Schema;
+const UserDetail = new Schema({
+    username: String,
+    password: String
+});
+
+UserDetail.plugin(passportLocalMongoose);
+const UserDetails = mongoose.model('userInfo', UserDetail, 'userInfo');
+
+
+passport.use(UserDetails.createStrategy());
+
+passport.serializeUser(UserDetails.serializeUser());
+passport.deserializeUser(UserDetails.deserializeUser());
+
+
+const connectEnsureLogin = require('connect-ensure-login');
+
+app.post('/login', (req, res, next) => {
+    passport.authenticate('local',
+        (err, user, info) => {
+            if (err) {
+                return next(err);
+            }
+
+            if (!user) {
+                return res.redirect('/login?info=' + info);
+            }
+
+            req.logIn(user, function(err) {
+                if (err) {
+                    return next(err);
+                }
+
+                return res.redirect('/');
+            });
+
+        })(req, res, next);
+});
+
+app.get('/login',
+    (req, res) => res.sendFile('login.html',
+        { root: __dirname })
+);
+
+app.get('/',
+    connectEnsureLogin.ensureLoggedIn(),
+    (req, res) => res.render('index.html')
+);
+
+UserDetails.register({username:'anna', active: false}, 'anna');
+
 
 const videos_dir = './videos/';
 const temp_dir = './temp/';
@@ -245,7 +324,4 @@ io.sockets.on('connection', function (socket) {
         }
     });
 });
-
-
-server.listen(3000);
 
