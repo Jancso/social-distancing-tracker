@@ -295,7 +295,7 @@ def main(video=None, output=None, confidence=None, distance=None, resize=None, s
                     dep_keys.remove(b)
                     
             #calc unique group hash and check if allready exist
-            group_id =  hash(str(group))
+            group_id =  hash(str(sorted(group)))
             if not group_id in global_group_dict.keys():
                 group_count+=1
                 data = {'group_nr' : group_count,
