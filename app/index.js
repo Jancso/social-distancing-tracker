@@ -288,7 +288,7 @@ io.sockets.on('connection', function (socket) {
                     // run people detection script
                     const abs_videos_dir = path.resolve(videos_dir);
                     const video_path = path.join(abs_videos_dir, fileName);
-                    let cmd = `../venv/bin/python ../people_detection/group_detection.py ${video_path} -o ${abs_videos_dir}`;
+                    let cmd = `../people_detection/venv/bin/python ../people_detection/group_detection.py ${video_path} -o ${abs_videos_dir}`;
 
                     child_process.exec(cmd, (err, stdout) => {
                         if (err) {
