@@ -26,7 +26,7 @@ import json
 import os
 
 #################### Parser settings #########################################
-#python group_detection.py home/joel/dev/example_01.mp4 -o home/joel/dev
+#python group_detection.py home/joel/dev/example_01.mp4 -o home/joel/dev/example_01
 parser = argparse.ArgumentParser(description='Detect groups in a video')
 
 parser.add_argument("video", help='filename of video to analyse')
@@ -92,6 +92,7 @@ def main(video=None, output=None, confidence=None, distance=None, resize=None, s
     video_input = video
     folder_name = os.path.basename(video).split('.')[0] #name of the video file
     out_folder = os.path.join(output,folder_name)
+    print(out_folder)
     if not os.path.exists(out_folder):
         os.mkdir(out_folder)
     output_video =  os.path.join(out_folder,"output_video.mp4")
@@ -294,8 +295,20 @@ def main(video=None, output=None, confidence=None, distance=None, resize=None, s
                     group.append(b)
                     dep_keys.remove(b)
                     
+            group.sort()
             #calc unique group hash and check if allready exist
-            group_id =  hash(str(sorted(group)))
+            group_id =  hash(str(group))
+            
+            sub_groups = []
+            for i in range(len(group)-2):
+                sub_groups.extend(list(map(list, combinations(group,i+2))))
+            
+            for sub in sub_groups:
+                sub_id = hash(str(sorted(sub)))
+                if sub_id in global_group_dict.keys():
+                    dic = global_group_dict[sub_id]
+                    dic['duration']+=1
+            
             if not group_id in global_group_dict.keys():
                 group_count+=1
                 data = {'group_nr' : group_count,
@@ -314,6 +327,7 @@ def main(video=None, output=None, confidence=None, distance=None, resize=None, s
                 #count in how many frames this group was detected
                 dic = global_group_dict[group_id]
                 dic['duration']+=1
+                
                 
                 if video_stream:
                 #write to json file if group in more then group_duration frames
