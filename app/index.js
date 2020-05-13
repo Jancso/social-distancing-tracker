@@ -1,4 +1,4 @@
-const cv = require('opencv4nodejs');
+// const cv = require('opencv4nodejs');
 const path = require('path');
 const child_process = require("child_process");
 const express = require('express');
@@ -61,6 +61,7 @@ passport.use(UserDetails.createStrategy());
 passport.serializeUser(UserDetails.serializeUser());
 passport.deserializeUser(UserDetails.deserializeUser());
 
+UserDetails.register({username:'anna', active: false}, 'anna');
 
 const connectEnsureLogin = require('connect-ensure-login');
 
@@ -96,7 +97,6 @@ app.get('/',
     (req, res) => res.render('index.html')
 );
 
-//UserDetails.register({username:'anna', active: false}, 'anna');
 
 app.get('/logout', function(req, res){
     req.logout();
@@ -191,6 +191,7 @@ app.get('/videos/:videoId/download/', connectEnsureLogin.ensureLoggedIn(), funct
     }
 });
 
+/*
 
 app.get('/webcam/', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
     res.render('webcam.html');
@@ -222,6 +223,8 @@ app.get('/webcam/stop/', connectEnsureLogin.ensureLoggedIn(), () => {
     wCap.release();
     console.log('Webcam stopped!');
 });
+
+*/
 
 files = {};
 
