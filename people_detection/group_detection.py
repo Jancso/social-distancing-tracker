@@ -3,6 +3,8 @@
 """
 Created on Tue Apr 14 14:09:25 2020
 
+This code was inspired by https://www.pyimagesearch.com/2018/08/13/opencv-people-counter/
+
 @author: joel
 """
 # import the necessary packages
