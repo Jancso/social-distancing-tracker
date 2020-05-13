@@ -65,7 +65,7 @@
 
                 <div class="row mb-3">
                     <div class="col-11">
-                        <label for="groupDuration">Group Duration
+                        <label for="groupDurationSlider">Group Duration
                             <button class="btn btn-sm"
                                     data-container="body"
                                     data-toggle="popover"
@@ -78,9 +78,9 @@
                                class="custom-range"
                                value="1"
                                min="1"
-                               max="1000"
-                               id="groupDuration"
-                               oninput="groupDurationOutput.value = groupDuration.value">
+                               max="5000"
+                               id="groupDurationSlider"
+                               oninput="groupDurationOutput.value = groupDurationSlider.value">
                     </div>
                     <div class="col-1 align-self-center text-center">
                         <output class="h5" name="groupDurationName" id="groupDurationOutput">1</output>
@@ -114,7 +114,7 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">Duration</th>
-                                    <td>{{ group.duration }}</td>
+                                    <td id="groupDuration-group{{ group.group_nr }}">{{ group.duration }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Size</th>
@@ -148,22 +148,34 @@
     const groupSizeSlider = document.getElementById('groupSizeSlider');
 
     groupSizeSlider.addEventListener('input', function (event) {
-        console.log('slider changed!');
-        updateGroupBySize();
+        console.log('Group size slider changed!');
+        updateGroup();
     });
 
-    function updateGroupBySize() {
+    const groupDurationSlider = document.getElementById('groupDurationSlider');
+
+    groupDurationSlider.addEventListener('input', function (event) {
+        console.log('Group duration slider changed!');
+        updateGroup();
+    });
+
+    function updateGroup() {
         const groupsElement = document.getElementById('groups');
-        for (let i = 1; i < groupsElement.children.length+1; i++) {
-            const groupElement = document.getElementById('group'+i);
-            const size = parseInt(document.getElementById('groupSize-group'+i).textContent);
+        for (let i = 1; i < groupsElement.children.length + 1; i++) {
+            const groupElement = document.getElementById('group' + i);
+
+            const size = parseInt(document.getElementById('groupSize-group' + i).textContent);
             const sliderSize = parseInt(groupSizeSlider.value);
             console.log(`group size ${size} is smaller than slider size ${groupSizeSlider.value}?:`, size < sliderSize);
-            if (size < sliderSize){
-                groupElement.setAttribute('hidden', '');
-            }
-            else {
+
+            const duration = parseInt(document.getElementById('groupDuration-group' + i).textContent);
+            const sliderDuration = parseInt(groupDurationSlider.value);
+            console.log(`group duration ${duration} is smaller than slider duration ${groupDurationSlider.value}?:`, duration < sliderDuration);
+
+            if (size >= sliderSize && duration >= sliderDuration){
                 groupElement.removeAttribute('hidden');
+            } else {
+                groupElement.setAttribute('hidden', '');
             }
         }
     }
