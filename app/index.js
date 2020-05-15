@@ -1,3 +1,12 @@
+/*
+Used resources:
+https://www.sitepoint.com/local-authentication-using-passport-node-js/
+https://medium.com/front-end-weekly/create-a-resumable-video-uploader-in-node-js-416269b2945e
+https://github.com/daspinola/video-stream-sample
+https://www.youtube.com/watch?v=qexy4Ph66JE
+ */
+
+
 // const cv = require('opencv4nodejs');
 const path = require('path');
 const child_process = require("child_process");
@@ -150,7 +159,7 @@ app.get('/videos/:videoId/', connectEnsureLogin.ensureLoggedIn(), function (req,
     }
 });
 
-// https://github.com/daspinola/video-stream-sample
+
 app.get('/videos/:videoId/download/', connectEnsureLogin.ensureLoggedIn(), function(req, res) {
     const videoPath = path.join(videos_dir, path.parse(req.params['videoId']).name, 'video.mp4');
     console.log(videoPath);
