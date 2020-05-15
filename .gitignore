@@ -20,5 +20,6 @@ uploads
 __pycache__
 
 *.avi
+*.pyc
 
 videos/
