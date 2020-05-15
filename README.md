@@ -11,6 +11,8 @@ surveillance cameras.
 Tested on Ubuntu 18.04
 
 ### Social Distancing Tracker
+For detecting and tracking people we used code provided by [pyimagesearch opencv-people-counter](https://www.pyimagesearch.com/2018/08/13/opencv-people-counter/)
+
 ```shell script
 $ cd people_detection
 ```
