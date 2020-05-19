@@ -3,8 +3,63 @@
 {% block content %}
 
 <div class="row pt-3">
-    <div class="col-12">
-        <h2>Home</h2>
+    <div class="col-2"></div>
+    <div class="col-8 text-justify">
+
+        <div class="card">
+            <div class="text-center card-header">
+                <h2>Group Detection during a Pandemic</h2>
+            </div>
+
+            <div class="card-body">
+
+                <p>Faced with the global COVID-19 pandemic now, the majority of people are taking all kinds of
+                    measures to protect themselves and others such as washing hands and practicing social
+                    distancing. Unfortunately, some people are reluctant to abide by these practices, meeting in
+                    large groups. Their irresponsible behavior contributes to the further spread of the virus,
+                    putting vulnerable people at risk, such as elderly people or people in poor health. In many
+                    countries, the police are patrolling places that are well known to be crowded such as
+                    beaches, parks and lakeside promenades, urging citizens to stay at home.
+                </p>
+
+                <p>
+                    Since the police cannot control all places at all times and increasing police presence incurs
+                    additional costs, our aim was to find an automatic way of detecting people who do not
+                    respect social distancing. We decided to build a tool that recognizes groups of people in a
+                    video, either pre-recorded or streamed from a surveillance camera. The main use case
+                    would be private persons, companies and/or authorities setting up surveillance cameras and
+                    using the tool to detect gatherings of people.
+
+                </p>
+
+                <p>
+                    Naturally, this raises concerns around data privacy. According to the General Data
+                    Protection Regulation (GDPR), the term ‘personal data’ is the entryway to the application of
+                    the regulation. The GDPR only applies if processing of data concerns personal data, with
+                    personal data being any information which is related to an identified or identifiable natural
+                    person. In our case, the question would be whether we can regard the existence of persons
+                    in a video as personal data, especially in public areas. While our tool assigns IDs to each
+                    person, thereby tracking the person, it does not try to identify the person in any way.
+
+                </p>
+
+                <p>
+                    Our tool consists of a group-detection algorithm and a web-based interface using that
+                    algorithm, allowing users to analyze their videos for potential congregations of people. The
+                    group-detection algorithm accepts video files or streams as an input and works as follows:
+                    Since a video is a sequence of frames (images), it tries to identify people in each frame
+                    using machine learning. If an object is identified as a person, a unique ID is assigned to it
+                    and the person is tracked. To detect groups, an ellipse with predefined length is drawn
+                    around the center of a person, which represents the allowed social distance. If the ellipses of
+                    two people intersect, it means they are too close and form a group. As an output, the
+                    algorithm produces a JSON file which contains information about detected groups in the
+                    video: a unique identifier for each group, the timestamp of group formation, the size of the
+                    group, the identifiers of the persons in the group and how many frames the group existed for.
+
+                </p>
+
+            </div>
+        </div>
     </div>
 </div>
 
