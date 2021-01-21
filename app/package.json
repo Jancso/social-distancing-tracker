@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "nunjucks": "^3.2.1",
     "body-parser": "^1.19.0",
     "express-session": "^1.17.1",
